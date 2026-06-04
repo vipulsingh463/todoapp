@@ -1,0 +1,22 @@
+trigger:
+- main
+- feature/* 
+
+pool: safari 
+
+parameters:
+- name: runTests
+  displayName: Run Tests
+  type: boolean
+  default: true
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+
+
