@@ -1,22 +1,28 @@
 trigger:
 - main
-- feature/* 
+- feature/*
 
-pool: safari 
+pool: safari
 
 parameters:
-- name: runTests
-  displayName: Run Tests
-  type: boolean
-  default: true
+- name: environment
+  displayName: "Select Environment"
+  type: string
+  default: dev
+  values:
+  - dev
+  - test
+  - prod
 
 stages:
 - stage: Build
+  displayName: "Build for ${{ parameters.environment }}"
   jobs:
   - job: BuildJob
     steps:
+    - script: echo "Running on ${{ parameters.environment }} environment"
+
     - task: TerraformInstaller@1
       inputs:
         terraformVersion: 'latest'
-
 
