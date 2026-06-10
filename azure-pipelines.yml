@@ -24,7 +24,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
           backendServiceArm: 'todoapp'
           backendAzureRmStorageAccountName: 'todoapprg'
           backendAzureRmContainerName: 'todoappcontainer'
@@ -38,7 +38,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'validate'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
 
     - job: terraformplan
       displayName: terraformplan
@@ -48,7 +48,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'plan'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
           environmentServiceNameAzureRM: 'todoapp'
 
   - stage: scanning
@@ -59,7 +59,7 @@ stages:
       - task: tfsec@1
         inputs:
           version: 'v1.26.0'
-          dir: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          dir: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
 
     - job: trivvyscanning
       steps:
@@ -67,7 +67,7 @@ stages:
         inputs:
           version: 'latest'
           type: 'repository'
-          target: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          target: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
           scanners: 'license, misconfig, secret, vuln'
           severities: 'UNKNOWN, LOW, MEDIUM, HIGH, CRITICAL'
           ignoreScanErrors: true
@@ -95,7 +95,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
           backendServiceArm: 'todoapp'
           backendAzureRmStorageAccountName: 'todoapprg'
           backendAzureRmContainerName: 'todoappcontainer'
@@ -108,7 +108,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'apply'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work'
           environmentServiceNameAzureRM: 'todoapp'
       
 
