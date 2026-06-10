@@ -92,18 +92,6 @@ stages:
           backendAzureRmStorageAccountName: 'todoapprg'
           backendAzureRmContainerName: 'todoappcontainer'
           backendAzureRmKey: 'terraform.ftstate'
-
-    - job: terraformapply
-      steps:
-      - task: TerraformTask@5
-        displayName: terraforminit
-        inputs:
-          provider: 'azurerm'
-          command: 'init'
-          backendServiceArm: 'todoapp'
-          backendAzureRmStorageAccountName: 'todoapprg'
-          backendAzureRmContainerName: 'todoappcontainer'
-          backendAzureRmKey: 'terraform.tfstate'
       - task: TerraformTask@5
         displayName: terraformapply
         inputs:
