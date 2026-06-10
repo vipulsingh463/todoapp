@@ -30,20 +30,12 @@ stages:
           backendAzureRmContainerName: 'todoappcontainer'
           backendAzureRmKey: 'terraform.tfstate'
 
-    - job: terraformvalidate
-      displayName: terraform validate
-      dependsOn: terraforminit1
-      steps:
       - task: TerraformTask@5
         inputs:
           provider: 'azurerm'
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)\Environment\dev'
 
-    - job: terraformplan
-      displayName: terraformplan
-      dependsOn: terraformvalidate
-      steps:
       - task: TerraformTask@5
         inputs:
           provider: 'azurerm'
