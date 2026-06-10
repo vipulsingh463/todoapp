@@ -1,36 +1,63 @@
-trigger:
+trigger: 
 - main
-- feature/*
 
-pool: safari
-
-parameters:
-- name: environment
-  displayName: "Select Environment"
-  type: string
-  default: dev
-  values:
-  - dev
-  - test
-  - prod
+pool: 
+ name: todoapp
 
 stages:
-- stage: Build
-  displayName: "Build for ${{ parameters.environment }}"
-  jobs:
-  - job: BuildJob
-    steps:
-    - script: echo "Running on ${{ parameters.environment }} environment"
+  - stage:  terraforminstall
+    displayName: terraform install
+    jobs:
+    - job: terraforminstall
+      steps:
+      - task: TerraformInstaller@1
+        inputs:
+          terraformVersion: 'latest'
 
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
+  - stage: terraformdeploy
+    dependsOn: terraforminstall
+    jobs:
+    - job: terraform-init
+      displayName: terraform-init
+      steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'todoapp'
+          backendAzureRmStorageAccountName: 'todoapprg'
+          backendAzureRmContainerName: 'todoappcontainer'
+          backendAzureRmKey: 'terraform.tfstate'
 
-- stage: Test
-  displayName: "Build for ${{ parameters.environment }}"
-  jobs:
-  - job: TestJob 
-    steps:
-    
-    
+    - job: terraformvalidate
+      displayName: terraform validate
+      dependsOn: terraform-init
+      steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
 
+    - job: terraformplan
+      displayName: terraformplan
+      dependsOn: terraformvalidate
+      steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          environmentServiceNameAzureRM: 'todoapp'
+
+  - stage: scanning
+    displayName: scanning
+    jobs:
+    - job: tfsecscanning
+      steps:
+      - task: tfsec@1
+        inputs:
+          version: 'v1.26.0'
+          dir: '$(System.DefaultWorkingDirectory)'
+
+    - job: trivvyscanning
+      steps:
+      
