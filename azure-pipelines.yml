@@ -17,8 +17,8 @@ stages:
   - stage: terraformdeploy
     dependsOn: terraforminstall
     jobs:
-    - job: terraform-init
-      displayName: terraform-init
+    - job: terraforminit
+      displayName: terraforminit
       steps:
       - task: TerraformTask@5
         inputs:
@@ -31,7 +31,7 @@ stages:
 
     - job: terraformvalidate
       displayName: terraform validate
-      dependsOn: terraform-init
+      dependsOn: terraforminit
       steps:
       - task: TerraformTask@5
         inputs:
@@ -60,4 +60,50 @@ stages:
 
     - job: trivvyscanning
       steps:
+      - task: trivy@2
+        inputs:
+          version: 'latest'
+          type: 'repository'
+          target: '$(System.DefaultWorkingDirectory)'
+          scanners: 'license, misconfig, secret, vuln'
+          severities: 'UNKNOWN, LOW, MEDIUM, HIGH, CRITICAL'
+          ignoreScanErrors: true
+          failOnSeverityThreshold: 'LOW'
+          publish: true
+
+  - stage: manualvalidation
+    jobs:
+    - job: manualvalidation
+      pool: server
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'vipulsingh463@gmail.com'
+          approvers: 'vipulsingh463@gmail.com'
+          instructions: 'fhg'
+          onTimeout: 'resume'
+
+  - stage: terraformapply
+    dependsOn: manualvalidation
+    jobs:
+    - job: terraforminit
+      steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'todoapp'
+          backendAzureRmStorageAccountName: 'todoapprg'
+          backendAzureRmContainerName: 'todoappcontainer'
+          backendAzureRmKey: 'terraform.ftstate'
+
+    - job: terraformapply
+      dependsOn: terraforminit
+      steps:
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          environmentServiceNameAzureRM: 'todoapp'
       
+
