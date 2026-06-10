@@ -38,7 +38,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'validate'
-          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s\Environment\dev'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s\Environment'
 
     - job: terraformplan
       displayName: terraformplan
