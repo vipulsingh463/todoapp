@@ -94,9 +94,18 @@ stages:
           backendAzureRmKey: 'terraform.ftstate'
 
     - job: terraformapply
-      dependsOn: terraforminit
       steps:
       - task: TerraformTask@5
+        displayName: terraforminit
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'todoapp'
+          backendAzureRmStorageAccountName: 'todoapprg'
+          backendAzureRmContainerName: 'todoappcontainer'
+          backendAzureRmKey: 'terraform.tfstate'
+      - task: TerraformTask@5
+        displayName: terraformapply
         inputs:
           provider: 'azurerm'
           command: 'apply'
