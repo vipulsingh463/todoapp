@@ -24,6 +24,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
           backendServiceArm: 'todoapp'
           backendAzureRmStorageAccountName: 'todoapprg'
           backendAzureRmContainerName: 'todoappcontainer'
@@ -37,6 +38,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'validate'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
 
     - job: terraformplan
       displayName: terraformplan
@@ -46,6 +48,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'plan'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
           environmentServiceNameAzureRM: 'todoapp'
 
   - stage: scanning
@@ -56,7 +59,7 @@ stages:
       - task: tfsec@1
         inputs:
           version: 'v1.26.0'
-          dir: '$(System.DefaultWorkingDirectory)'
+          dir: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
 
     - job: trivvyscanning
       steps:
@@ -64,7 +67,7 @@ stages:
         inputs:
           version: 'latest'
           type: 'repository'
-          target: '$(System.DefaultWorkingDirectory)'
+          target: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
           scanners: 'license, misconfig, secret, vuln'
           severities: 'UNKNOWN, LOW, MEDIUM, HIGH, CRITICAL'
           ignoreScanErrors: true
@@ -92,6 +95,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
           backendServiceArm: 'todoapp'
           backendAzureRmStorageAccountName: 'todoapprg'
           backendAzureRmContainerName: 'todoappcontainer'
@@ -104,6 +108,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'apply'
+          workingDirectory: 'C:\Users\HP\Downloads\agent\vsts-agent-win-x64-4.274.1\_work\1\s'
           environmentServiceNameAzureRM: 'todoapp'
       
 
