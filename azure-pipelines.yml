@@ -17,7 +17,7 @@ stages:
   - stage: terraformdeploy
     dependsOn: terraforminstall
     jobs:
-    - job: terraforminit
+    - job: terraforminit1
       displayName: terraforminit
       steps:
       - task: TerraformTask@5
@@ -32,7 +32,7 @@ stages:
 
     - job: terraformvalidate
       displayName: terraform validate
-      dependsOn: terraforminit
+      dependsOn: terraforminit1
       steps:
       - task: TerraformTask@5
         inputs:
